@@ -19,12 +19,6 @@ spec:
     metadata:
       labels:
         app: {{ .Chart.Name }}
-      annotations:
-          {{`{{- with secret "secret/data/pulse/media-service" -}}`}}
-          {{`{{- range $k, $v := .Data.data }}`}}
-          export {{ `{{ $k | toUpper }}` }}={{ `{{ $v }}` }}
-          {{`{{- end }}`}}
-          {{`{{- end }}`}}
     spec:
       containers:
         - name: {{ .Chart.Name }}
