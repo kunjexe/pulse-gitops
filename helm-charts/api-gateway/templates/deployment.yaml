@@ -5,7 +5,6 @@ metadata:
   namespace: pulse-app
   labels:
     app: {{ .Chart.Name }}
-    version: {{ .Values.image.tag }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -20,12 +19,18 @@ spec:
     metadata:
       labels:
         app: {{ .Chart.Name }}
-        version: {{ .Values.image.tag }}
       annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "{{ .Values.service.port }}"
-        prometheus.io/path: "/metrics"
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/role: "{{ .Chart.Name }}"
+        vault.hashicorp.com/agent-inject-secret-config: "secret/data/pulse/{{ .Chart.Name }}"
+        vault.hashicorp.com/agent-inject-template-config: |
+          {{`{{- with secret "secret/data/pulse/api-gateway" -}}`}}
+          {{`{{- range $k, $v := .Data.data }}`}}
+          export {{ `{{ $k | toUpper }}` }}={{ `{{ $v }}` }}
+          {{`{{- end }}`}}
+          {{`{{- end }}`}}
     spec:
+      serviceAccountName: {{ .Chart.Name }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

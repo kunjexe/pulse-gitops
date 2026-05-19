@@ -20,10 +20,7 @@ resources:
 env:
   PORT: "8001"
   KAFKA_BOOTSTRAP_SERVERS: "kafka.pulse-infra.svc.cluster.local:9092"
-  DATABASE_URL: "postgresql+asyncpg://pulse:pulse_dev_pass@postgres-postgresql.pulse-infra.svc.cluster.local:5432/pulse_users"
-  JWT_SECRET: "dev-jwt-secret-change-in-prod"
 # Secrets managed by Vault - not in values
-# DATABASE_URL, JWT_SECRET injected via Vault Agent
 
 healthCheck:
   liveness:

@@ -12,7 +12,6 @@ resources:
 env:
   PORT: "8003"
   KAFKA_BOOTSTRAP_SERVERS: "kafka.pulse-infra.svc.cluster.local:9092"
-  REDIS_URL: "redis://redis-master.pulse-infra.svc.cluster.local:6379/0"
 healthCheck:
   liveness: { path: /health, initialDelaySeconds: 15, periodSeconds: 10 }
   readiness: { path: /ready, initialDelaySeconds: 5, periodSeconds: 5 }

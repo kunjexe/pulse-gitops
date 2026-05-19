@@ -12,7 +12,6 @@ resources:
 env:
   PORT: "8002"
   KAFKA_BOOTSTRAP_SERVERS: "kafka.pulse-infra.svc.cluster.local:9092"
-  DATABASE_URL: "postgresql://pulse:pulse_dev_pass@postgres-postgresql.pulse-infra.svc.cluster.local:5432/pulse_posts"
 healthCheck:
   liveness: { path: /health, initialDelaySeconds: 15, periodSeconds: 10 }
   readiness: { path: /ready, initialDelaySeconds: 5, periodSeconds: 5 }
