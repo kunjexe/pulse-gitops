@@ -15,6 +15,7 @@ env:
   POST_SERVICE_URL: "http://post-service.pulse-app.svc.cluster.local:8002"
   FEED_SERVICE_URL: "http://feed-service.pulse-app.svc.cluster.local:8003"
   MEDIA_SERVICE_URL: "http://media-service.pulse-app.svc.cluster.local:8004"
+  JWT_SECRET: "super-secure-jwt-secret-from-vault"
 healthCheck:
   liveness: { path: /health, initialDelaySeconds: 10, periodSeconds: 10 }
   readiness: { path: /ready, initialDelaySeconds: 5, periodSeconds: 5 }
