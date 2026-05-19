@@ -1,4 +1,4 @@
-replicaCount: 2
+replicaCount: 3
 
 image:
   repository: "pulse/user-service"  # Set by CI: <account>.dkr.ecr.us-east-1.amazonaws.com/pulse/user-service
