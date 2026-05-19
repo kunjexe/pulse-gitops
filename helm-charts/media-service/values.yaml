@@ -1,0 +1,21 @@
+replicaCount: 2
+image:
+  repository: "pulse/media-service"
+  tag: "v1"
+  pullPolicy: Never
+service:
+  type: ClusterIP
+  port: 8004
+resources:
+  requests: { cpu: 200m, memory: 256Mi }
+  limits: { cpu: 1000m, memory: 1Gi }
+env:
+  PORT: "8004"
+  AWS_REGION: "us-east-1"
+  AWS_S3_BUCKET: "pulse-media-local"
+healthCheck:
+  liveness: { path: /health, initialDelaySeconds: 10, periodSeconds: 10 }
+  readiness: { path: /ready, initialDelaySeconds: 5, periodSeconds: 5 }
+autoscaling: { enabled: false, minReplicas: 2, maxReplicas: 6, targetCPUUtilization: 70 }
+serviceMonitor: { enabled: false, path: /metrics, interval: 15s }
+

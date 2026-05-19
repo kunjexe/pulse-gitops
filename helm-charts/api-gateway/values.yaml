@@ -1,0 +1,23 @@
+replicaCount: 2
+image:
+  repository: "pulse/api-gateway"
+  tag: "v1"
+  pullPolicy: Never
+service:
+  type: ClusterIP
+  port: 3000
+resources:
+  requests: { cpu: 100m, memory: 128Mi }
+  limits: { cpu: 500m, memory: 512Mi }
+env:
+  PORT: "3000"
+  USER_SERVICE_URL: "http://user-service.pulse-app.svc.cluster.local:8001"
+  POST_SERVICE_URL: "http://post-service.pulse-app.svc.cluster.local:8002"
+  FEED_SERVICE_URL: "http://feed-service.pulse-app.svc.cluster.local:8003"
+  MEDIA_SERVICE_URL: "http://media-service.pulse-app.svc.cluster.local:8004"
+  JWT_SECRET: "dev-jwt-secret-change-in-prod"
+healthCheck:
+  liveness: { path: /health, initialDelaySeconds: 10, periodSeconds: 10 }
+  readiness: { path: /ready, initialDelaySeconds: 5, periodSeconds: 5 }
+autoscaling: { enabled: false, minReplicas: 2, maxReplicas: 8, targetCPUUtilization: 70 }
+serviceMonitor: { enabled: false, path: /metrics, interval: 15s }

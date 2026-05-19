@@ -1,0 +1,20 @@
+replicaCount: 2
+image:
+  repository: "pulse/notification-service"
+  tag: "v1"
+  pullPolicy: Never
+service:
+  type: ClusterIP
+  port: 8005
+resources:
+  requests: { cpu: 100m, memory: 128Mi }
+  limits: { cpu: 500m, memory: 256Mi }
+env:
+  PORT: "8005"
+  KAFKA_BOOTSTRAP_SERVERS: "kafka.pulse-infra.svc.cluster.local:9092"
+  DATABASE_URL: "postgresql://pulse:pulse_dev_pass@postgres-postgresql.pulse-infra.svc.cluster.local:5432/pulse_notifications"
+healthCheck:
+  liveness: { path: /health, initialDelaySeconds: 15, periodSeconds: 10 }
+  readiness: { path: /ready, initialDelaySeconds: 5, periodSeconds: 5 }
+autoscaling: { enabled: false, minReplicas: 1, maxReplicas: 4, targetCPUUtilization: 70 }
+serviceMonitor: { enabled: false, path: /metrics, interval: 15s }

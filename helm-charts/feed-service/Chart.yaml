@@ -1,0 +1,6 @@
+apiVersion: v2
+name: feed-service
+description: Pulse Feed Service - personalized feed aggregation
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

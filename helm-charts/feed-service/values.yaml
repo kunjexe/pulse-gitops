@@ -1,0 +1,20 @@
+replicaCount: 2
+image:
+  repository: "pulse/feed-service"
+  tag: "v1"
+  pullPolicy: Never
+service:
+  type: ClusterIP
+  port: 8003
+resources:
+  requests: { cpu: 100m, memory: 128Mi }
+  limits: { cpu: 500m, memory: 256Mi }
+env:
+  PORT: "8003"
+  KAFKA_BOOTSTRAP_SERVERS: "kafka.pulse-infra.svc.cluster.local:9092"
+  REDIS_URL: "redis://redis-master.pulse-infra.svc.cluster.local:6379/0"
+healthCheck:
+  liveness: { path: /health, initialDelaySeconds: 15, periodSeconds: 10 }
+  readiness: { path: /ready, initialDelaySeconds: 5, periodSeconds: 5 }
+autoscaling: { enabled: false, minReplicas: 2, maxReplicas: 6, targetCPUUtilization: 70 }
+serviceMonitor: { enabled: false, path: /metrics, interval: 15s }

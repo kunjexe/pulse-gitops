@@ -1,0 +1,47 @@
+replicaCount: 2
+
+image:
+  repository: "pulse/user-service"  # Set by CI: <account>.dkr.ecr.us-east-1.amazonaws.com/pulse/user-service
+  tag: "v1"
+  pullPolicy: Never
+
+service:
+  type: ClusterIP
+  port: 8001
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+env:
+  PORT: "8001"
+  KAFKA_BOOTSTRAP_SERVERS: "kafka.pulse-infra.svc.cluster.local:9092"
+  DATABASE_URL: "postgresql+asyncpg://pulse:pulse_dev_pass@postgres-postgresql.pulse-infra.svc.cluster.local:5432/pulse_users"
+  JWT_SECRET: "dev-jwt-secret-change-in-prod"
+# Secrets managed by Vault - not in values
+# DATABASE_URL, JWT_SECRET injected via Vault Agent
+
+healthCheck:
+  liveness:
+    path: /health
+    initialDelaySeconds: 15
+    periodSeconds: 10
+  readiness:
+    path: /ready
+    initialDelaySeconds: 5
+    periodSeconds: 5
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 6
+  targetCPUUtilization: 70
+
+serviceMonitor:
+  enabled: false
+  path: /metrics
+  interval: 15s
