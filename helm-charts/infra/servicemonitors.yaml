@@ -1,0 +1,95 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: pulse-api-gateway
+  namespace: pulse-app
+  labels:
+    release: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: api-gateway
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: pulse-user-service
+  namespace: pulse-app
+  labels:
+    release: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: user-service
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: pulse-post-service
+  namespace: pulse-app
+  labels:
+    release: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: post-service
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: pulse-feed-service
+  namespace: pulse-app
+  labels:
+    release: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: feed-service
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: pulse-notification-service
+  namespace: pulse-app
+  labels:
+    release: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: notification-service
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: pulse-media-service
+  namespace: pulse-app
+  labels:
+    release: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: media-service
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
