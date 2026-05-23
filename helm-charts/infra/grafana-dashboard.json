@@ -1,0 +1,44 @@
+{
+  "dashboard": {
+    "title": "Pulse Platform Overview",
+    "panels": [
+      {
+        "title": "Request Rate (per second)",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+        "targets": [{"expr": "sum(rate(http_requests_total[5m])) by (job)", "legendFormat": "{{job}}"}],
+        "datasource": "Prometheus"
+      },
+      {
+        "title": "Request Duration (p95)",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+        "targets": [{"expr": "histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le, job))", "legendFormat": "{{job}} p95"}],
+        "datasource": "Prometheus"
+      },
+      {
+        "title": "Active Pods",
+        "type": "stat",
+        "gridPos": {"h": 4, "w": 24, "x": 0, "y": 8},
+        "targets": [{"expr": "count(up{namespace=\"pulse-app\"} == 1) by (job)", "legendFormat": "{{job}}"}],
+        "datasource": "Prometheus"
+      },
+      {
+        "title": "Error Rate",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 12},
+        "targets": [{"expr": "sum(rate(http_requests_total{status=~\"5..\"}[5m])) by (job)", "legendFormat": "{{job}} 5xx"}],
+        "datasource": "Prometheus"
+      },
+      {
+        "title": "Memory Usage",
+        "type": "timeseries",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 12},
+        "targets": [{"expr": "sum(container_memory_working_set_bytes{namespace=\"pulse-app\"}) by (pod) / 1024 / 1024", "legendFormat": "{{pod}} MB"}],
+        "datasource": "Prometheus"
+      }
+    ],
+    "time": {"from": "now-1h", "to": "now"},
+    "refresh": "10s"
+  }
+}
